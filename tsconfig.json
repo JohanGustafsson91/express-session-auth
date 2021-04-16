@@ -20,5 +20,5 @@
     "skipLibCheck": true /* Skip type checking of declaration files. */,
     "forceConsistentCasingInFileNames": true /* Disallow inconsistently-cased references to the same file. */
   },
-  "exclude": ["jest.config.js", "node_modules", "build"]
+  "exclude": ["jest.config.js", "node_modules", "build", "client"]
 }

@@ -2,6 +2,7 @@ import express, { Express } from "express";
 import helmet from "helmet";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
+import cors from "cors";
 import session from "express-session";
 import MongoStore from "connect-mongo";
 
@@ -39,6 +40,7 @@ const {
     app.disable("x-powered-by");
     app.use(express.json());
     app.use(express.urlencoded({ extended: true }));
+    app.use(cors());
 
     app.use(
       session({
