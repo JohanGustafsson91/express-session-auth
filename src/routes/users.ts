@@ -10,24 +10,19 @@ const userRouter = express.Router();
 userRouter.post("", async (req: Request, res: Response) => {
   try {
     const { firstName, lastName, email, password }: User = req.body;
-    const validation = postSchema.validate({
-      firstName,
-      lastName,
-      email,
-      password,
-    });
+    const userData = { firstName, lastName, email, password };
 
-    if (validation.error) {
+    const validation = postSchema.validate(userData);
+    if (validation.error)
       throw new BadRequestError(req.baseUrl, validation.error.details);
-    }
 
-    const newUser = new UserModel({ firstName, lastName, email, password });
+    const newUser = new UserModel(userData);
     await newUser.save();
 
     const sessionUser = userToSession(newUser);
     req.session.user = sessionUser;
 
-    return res.status(200).json(sessionUser);
+    return res.status(201).json(sessionUser);
   } catch (error) {
     return sendErrorAsHttpResponse(req, res, error);
   }

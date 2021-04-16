@@ -1,2 +1,2 @@
-export * from "./errors.domainErrors";
-export * from "./errors.sendErrorAsHttpResponse";
+export * from "./domainErrors";
+export * from "./sendErrorAsHttpResponse";

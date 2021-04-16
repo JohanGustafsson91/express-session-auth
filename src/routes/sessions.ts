@@ -16,16 +16,15 @@ const sessionRouter = express.Router();
 sessionRouter.post("", async (req: Request, res: Response) => {
   try {
     const { email, password } = req.body;
+    const sessionData = { email, password };
 
-    const validation = postSchema.validate({ email, password });
-    if (validation.error) {
+    const validation = postSchema.validate(sessionData);
+    if (validation.error)
       throw new BadRequestError(req.baseUrl, validation.error.details);
-    }
 
     const user = await UserModel.findOne({ email });
-    if (!user || !compareSync(password, user.password)) {
+    if (!user || !compareSync(password, user.password))
       throw new UnauthorizedError(req.baseUrl, "Invalid login credentials");
-    }
 
     const sessionUser = userToSession(user);
     req.session.user = sessionUser;
@@ -39,17 +38,11 @@ sessionRouter.post("", async (req: Request, res: Response) => {
 sessionRouter.delete("", async (req: Request, res: Response) => {
   try {
     const user = req.session.user;
-    if (!user) {
-      throw new UnprocessableEntityError(req.baseUrl);
-    }
+    if (!user) throw new UnprocessableEntityError(req.baseUrl);
 
     req.session.destroy((error) => {
-      if (error) {
-        throw error;
-      }
-
+      if (error) throw error;
       res.clearCookie(process.env.SESSION_NAME as string);
-
       return res.status(200).json(user);
     });
   } catch (error) {
