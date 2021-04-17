@@ -16,5 +16,5 @@ export const AppContext = createContext<AppContextProps | undefined>(undefined);
 
 interface AppContextProps {
   user: User | null;
-  setUser: React.Dispatch<React.SetStateAction<User | null>>;
+  setUser: React.Dispatch<React.SetStateAction<User | null | "pending">>;
 }

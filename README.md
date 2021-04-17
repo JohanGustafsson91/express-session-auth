@@ -2,6 +2,8 @@
 
 ### TODOs:
 
+- Dockerize local development
+- -||- environments
 - Check number of connections to mongo
 - Add logger middleware
 - Add eslint rules
