@@ -6,6 +6,7 @@ import { Logout } from "components/Logout";
 import { AppContext } from "./App.useAppContext";
 import { request } from "utils/request";
 import { Redirect } from "react-router-dom";
+import { Register } from "components/Register";
 
 export const App = () => {
   const [user, setUser] = useState<User | null | "pending">("pending");
@@ -29,7 +30,10 @@ export const App = () => {
       <Router>
         <Switch>
           <Route path="/login">
-            <Login />
+            <>
+              <Login />
+              <Register />
+            </>
           </Route>
           <Route path="/logout">
             <Logout />

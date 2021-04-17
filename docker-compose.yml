@@ -1,0 +1,51 @@
+version: "3.7"
+
+services:
+  frontend:
+    restart: always
+    ports:
+      - 3000:3000
+    volumes:
+      - ./client:/client
+      - /client/node_modules
+    build:
+      context: ./client
+    links:
+      - backend
+    networks:
+      - sessionauthnetwork
+
+  backend:
+    restart: always
+    build:
+      context: .
+    ports:
+      - "8080:8080"
+    environment:
+      - PORT=8080
+      - MONGO_URI=mongodb://mongo:27017/session-auth
+    volumes:
+      - ./src:/backend/src
+      - ./nodemon.json:/backend/nodemon.json
+    depends_on:
+      - mongo
+    networks:
+      - sessionauthnetwork
+
+  mongo:
+    image: mongo:4.2.8
+    ports:
+      - 27017:27017
+    volumes:
+      - mongodb:/data/db
+      - mongodb_config:/data/configdb
+    networks:
+      - sessionauthnetwork
+
+volumes:
+  mongodb:
+  mongodb_config:
+
+networks:
+  sessionauthnetwork:
+    driver: bridge
