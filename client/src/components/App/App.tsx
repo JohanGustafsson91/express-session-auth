@@ -14,7 +14,7 @@ export const App = () => {
     (async function authenticate() {
       try {
         const user = await request<User>("/api/sessions");
-        if (!user.userId) throw new Error("Unathorized");
+        if (!user.email) throw new Error("Unathorized");
         setUser(user);
       } catch (error) {
         setUser(null);
@@ -45,7 +45,6 @@ const protectRoute = (page: ReactElement, user: User | null) => () =>
   user ? page : <Redirect to="/login" />;
 
 export interface User {
-  userId: string;
   firstName: string;
   lastName: string;
   email: string;
