@@ -1,4 +1,4 @@
-import { ReactElement, useEffect, useState } from "react";
+import { JSXElementConstructor, useEffect, useState } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { Login } from "components/Login";
 import { Home } from "components/Home";
@@ -23,30 +23,29 @@ export const App = () => {
     })();
   }, []);
 
-  if (user === "pending") return null;
-
-  return (
+  return user !== "pending" ? (
     <AppContext.Provider value={{ user, setUser }}>
       <Router>
         <Switch>
-          <Route path="/login">
-            <>
-              <Login />
-              <Register />
-            </>
-          </Route>
-          <Route path="/logout">
-            <Logout />
-          </Route>
-          <Route path="/" component={protectRoute(<Home />, user)}></Route>
+          <Route path="/login" component={unprotectedPage(Login, user)} />
+          <Route path="/register" component={unprotectedPage(Register, user)} />
+          <Route path="/logout" component={protectPage(Logout, user)} />
+          <Route path="/" component={protectPage(Home, user)} />
         </Switch>
       </Router>
     </AppContext.Provider>
-  );
+  ) : null;
 };
 
-const protectRoute = (page: ReactElement, user: User | null) => () =>
-  user ? page : <Redirect to="/login" />;
+const protectPage = (
+  Component: JSXElementConstructor<any>,
+  user: User | null
+) => () => (user ? <Component user={user} /> : <Redirect to="/login" />);
+
+const unprotectedPage = (
+  Component: JSXElementConstructor<any>,
+  user: User | null
+) => () => (!user ? <Component user={user} /> : <Redirect to="/" />);
 
 export interface User {
   firstName: string;

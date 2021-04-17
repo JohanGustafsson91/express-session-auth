@@ -1,9 +1,8 @@
 import { useAppContext } from "components/App";
 import { useEffect } from "react";
-import { Redirect } from "react-router-dom";
 
 export const Logout = () => {
-  const { user, setUser } = useAppContext();
+  const { setUser } = useAppContext();
 
   useEffect(() => {
     (async function logout() {
@@ -15,8 +14,6 @@ export const Logout = () => {
       }
     })();
   }, [setUser]);
-
-  if (!user) return <Redirect to="/login" />;
 
   return null;
 };

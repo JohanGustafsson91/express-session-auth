@@ -1,10 +1,9 @@
 import { useAppContext, User } from "components/App";
 import { FormEvent, useRef, useState } from "react";
-import { Redirect } from "react-router-dom";
 import { request } from "utils/request";
 
 export const Login = () => {
-  const { user, setUser } = useAppContext();
+  const { setUser } = useAppContext();
   const [error, setError] = useState(false);
   const refEmail = useRef<HTMLInputElement>(null);
   const refPassword = useRef<HTMLInputElement>(null);
@@ -27,10 +26,6 @@ export const Login = () => {
       setError(true);
     }
   };
-
-  if (user) {
-    return <Redirect to="/" />;
-  }
 
   return (
     <div style={{ width: "50%", margin: "0 auto", marginTop: "25vh" }}>
