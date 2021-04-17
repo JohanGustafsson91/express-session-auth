@@ -1,6 +1,7 @@
 import { useAppContext, User } from "components/App";
 import { FormEvent, useRef, useState } from "react";
 import { request } from "utils/request";
+import { Link } from "react-router-dom";
 
 export const Login = () => {
   const { setUser } = useAppContext();
@@ -47,6 +48,9 @@ export const Login = () => {
         <button type="submit">Login</button>
         {error && <i>Could not login</i>}
       </form>
+      <p>
+        or <Link to="/register">register</Link>
+      </p>
     </div>
   );
 };

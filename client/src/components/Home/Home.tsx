@@ -1,10 +1,12 @@
 import { User } from "components/App";
 import { Link } from "react-router-dom";
 
-export const Home = ({ user }: Props) => (
+export const Home = ({ user: { firstName } }: Props) => (
   <div>
-    <Link to="/logout">Logout</Link>
-    <pre>{JSON.stringify(user, null, 2)}</pre>
+    <h1>Welcome{firstName ? ` ${firstName}` : ""}!</h1>
+    <p>
+      <Link to="/logout">Logout</Link>
+    </p>
   </div>
 );
 
