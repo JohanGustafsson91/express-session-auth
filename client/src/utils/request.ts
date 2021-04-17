@@ -14,7 +14,7 @@ export async function request<T>(
 
     const data = await response.json();
 
-    if (response.status === 401) {
+    if (response.status === 401 && window.location.pathname !== "/login") {
       window.location.assign("/login");
       throw new Error(data);
     }

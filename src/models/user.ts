@@ -1,5 +1,6 @@
 import mongoose, { Document, Model } from "mongoose";
 import { compareSync, hashSync } from "bcryptjs";
+import { BadRequestError } from "errors";
 
 const UserSchema = new mongoose.Schema<UserDocument, UserModel>(
   {
@@ -38,6 +39,28 @@ UserSchema.methods.comparePasswords = function comparePasswords(password) {
   return compareSync(password, this.password);
 };
 
+UserSchema.post(
+  "save",
+  (error: mongoose.CallbackError, doc: any, next: Function) => {
+    const duplicateError = (error as unknown) as DuplicateError | null;
+
+    if (duplicateError === null || duplicateError.code !== 11000) return next();
+
+    const { keyPattern, keyValue } = duplicateError;
+    const [type] = Object.keys(keyPattern);
+    const [firstLetter, ...rest] = type;
+    const parsedError = new BadRequestError("Save user", [
+      {
+        message: `${firstLetter.toUpperCase()}${rest.join("")} already exists`,
+        type,
+        path: [Object.keys(keyValue)[0]],
+      },
+    ]);
+
+    return next(parsedError);
+  }
+);
+
 export const UserModel = mongoose.model<UserDocument, UserModel>(
   "User",
   UserSchema
@@ -56,6 +79,13 @@ interface UserDocument extends User, Document {
     this: Model<UserDocument>,
     password: User["password"]
   ): string;
+}
+
+interface DuplicateError {
+  name: string;
+  code?: number;
+  keyPattern: Record<string, string>;
+  keyValue: Record<string, string>;
 }
 
 interface UserModel extends Model<UserDocument> {}
