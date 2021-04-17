@@ -51,14 +51,7 @@ sessionRouter.delete("", async (req: Request, res: Response) => {
 });
 
 sessionRouter.get("", async (req: Request, res: Response) => {
-  try {
-    if (!req.session.user)
-      throw new UnauthorizedError(req.baseUrl, "Invalid login credentials");
-
-    res.status(200).json({ ...req.session.user });
-  } catch (error) {
-    return sendErrorAsHttpResponse(req, res, error);
-  }
+  return res.status(200).json({ ...req.session.user });
 });
 
 export { sessionRouter };

@@ -11,7 +11,14 @@ export async function request<T>(
       },
       ...init,
     });
+
     const data = await response.json();
+
+    if (response.status === 401) {
+      window.location.assign("/login");
+      throw new Error(data);
+    }
+
     if (!response.ok) throw new Error(data);
     return data;
   } catch (error) {

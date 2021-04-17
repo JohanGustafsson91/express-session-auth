@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import mongoose from "mongoose";
 import cors from "cors";
 import session from "express-session";
+import morgan from "morgan";
 import MongoStore from "connect-mongo";
 
 import { userRouter, sessionRouter } from "routes";
@@ -34,6 +35,7 @@ import { config } from "config";
     app.use(express.json());
     app.use(express.urlencoded({ extended: true }));
     app.use(cors());
+    app.use(morgan("common"));
 
     app.use(
       session({
