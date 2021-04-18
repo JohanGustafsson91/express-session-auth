@@ -2,32 +2,31 @@ version: "3.7"
 
 services:
   frontend:
-    restart: always
-    ports:
-      - 3000:3000
-    volumes:
-      - ./client:/client
-      - /client/node_modules
     build:
       context: ./client
+    ports:
+      - 3000:3000
+    environment:
+      NODE_ENV: development
+    volumes:
+      - ./client:/code
+      - /client/node_modules
+    command: npm run start
     links:
       - backend
     networks:
       - sessionauthnetwork
 
   backend:
-    restart: always
     build:
-      context: .
+      context: ./
     ports:
       - "8080:8080"
     environment:
-      - PORT=8080
-      - MONGO_URI=mongodb://mongo:27017/session-auth
+      NODE_ENV: development
     volumes:
-      - ./src:/backend/src
-      - ./nodemon.json:/backend/nodemon.json
-      - ./node_modules:/backend/node_modules
+      - ./:/code
+    command: npm run dev
     depends_on:
       - mongo
     networks:

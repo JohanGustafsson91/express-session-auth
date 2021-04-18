@@ -1,11 +1,11 @@
 FROM node:14.15.0
 
-WORKDIR /client
+WORKDIR /code
 
-COPY package*.json /client/
+COPY package*.json /code/
 RUN npm install
 
-COPY . /client/
+COPY . /code/
 
 EXPOSE 3000
 

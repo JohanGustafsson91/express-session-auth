@@ -1,12 +1,15 @@
-FROM node:14.15.0
+FROM node:14.15.0 as base
 
-WORKDIR /backend
+WORKDIR /code
 
-COPY package*.json /backend/
+COPY package*.json /code/
 RUN npm install
 
-COPY . /backend/
+COPY . /code/
 
 EXPOSE 8080
 
 CMD ["npm", "run", "dev"]
+
+
+
