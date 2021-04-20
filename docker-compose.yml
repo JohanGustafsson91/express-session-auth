@@ -6,27 +6,29 @@ services:
       context: ./client
     ports:
       - 3000:3000
+    container_name: session-auth-client
     environment:
       NODE_ENV: development
     volumes:
       - ./client:/code
       - /client/node_modules
-    command: npm run start
+    stdin_open: true
     links:
-      - backend
+      - api
     networks:
       - sessionauthnetwork
 
-  backend:
+  api:
     build:
-      context: ./
+      context: ./api
     ports:
       - "8080:8080"
+    container_name: session-auth-api
     environment:
       NODE_ENV: development
     volumes:
-      - ./:/code
-    command: npm run dev
+      - ./api:/code
+      - /api/node_modules
     depends_on:
       - mongo
     networks:
