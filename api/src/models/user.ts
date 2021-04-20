@@ -25,10 +25,6 @@ const UserSchema = new mongoose.Schema<UserDocument, UserModel>(
   { timestamps: true }
 );
 
-UserSchema.virtual("fullName").get(function (this: UserDocument) {
-  return this.firstName + this.lastName;
-});
-
 UserSchema.pre<UserDocument>("save", function preSave() {
   if (this.isModified("password")) {
     this.password = hashSync(this.password, 10);
@@ -74,7 +70,6 @@ export interface User extends Document {
 }
 
 interface UserDocument extends User, Document {
-  fullName(): string;
   comparePasswords(
     this: Model<UserDocument>,
     password: User["password"]

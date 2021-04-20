@@ -16,19 +16,13 @@ export const sendErrorAsHttpResponse = (
     (knownError) => error instanceof knownError
   );
 
-  if (!knownError) return sendInternalErrorAsHttpResponse(req, res, error);
+  if (!knownError) {
+    const internalError = new InternalServerError(req.baseUrl, error.message);
+    return res.status(internalError.data.status).json(internalError);
+  }
 
-  const castedError = (error as unknown) as { data: Data }; // TODO inherit DomainError
+  const castedError = (error as unknown) as { data: Data };
   return res.status(castedError.data.status).json(castedError);
-};
-
-const sendInternalErrorAsHttpResponse = (
-  req: Request,
-  res: Response,
-  error: Error
-) => {
-  const internalError = new InternalServerError(req.baseUrl, error.message);
-  return res.status(internalError.data.status).json(internalError);
 };
 
 const knownErrors = [

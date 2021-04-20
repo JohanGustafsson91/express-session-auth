@@ -6,6 +6,7 @@ import { request } from "utils/request";
 export const Register = () => {
   const { setUser } = useAppContext();
   const [error, setError] = useState(false);
+
   const refFirstName = useRef<HTMLInputElement>(null);
   const refLastName = useRef<HTMLInputElement>(null);
   const refEmail = useRef<HTMLInputElement>(null);

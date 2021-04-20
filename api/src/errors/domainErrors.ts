@@ -17,6 +17,7 @@ class DomainError extends Error {
     invalidParams?: Data["invalid_params"]
   ) {
     super(message);
+
     this.name = this.constructor.name;
     this.data = {
       type,
@@ -26,6 +27,7 @@ class DomainError extends Error {
       detail: detail ?? "",
       invalid_params: invalidParams ?? [],
     };
+
     Error.captureStackTrace(this, this.constructor);
   }
 }

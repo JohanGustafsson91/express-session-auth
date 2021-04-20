@@ -29,15 +29,15 @@ export const App = () => {
         <Switch>
           <Route path="/login" component={unprotectedPage(Login, user)} />
           <Route path="/register" component={unprotectedPage(Register, user)} />
-          <Route path="/logout" component={protectPage(Logout, user)} />
-          <Route path="/" component={protectPage(Home, user)} />
+          <Route path="/logout" component={protectedPage(Logout, user)} />
+          <Route path="/" component={protectedPage(Home, user)} />
         </Switch>
       </Router>
     </AppContext.Provider>
   ) : null;
 };
 
-const protectPage = (
+const protectedPage = (
   Component: JSXElementConstructor<any>,
   user: User | null
 ) => () => (user ? <Component user={user} /> : <Redirect to="/login" />);
